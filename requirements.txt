@@ -2,3 +2,4 @@ Django>=5.1,<5.2
 wagtail>=6.4,<6.5
 wagtail-localize
 wagtail-modeladmin
+psycopg2-binary

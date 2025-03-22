@@ -6,5 +6,5 @@
 /venv/
 *.pyc
 __pycache__/
-migrations/
+*/migrations/*
 *.sqlite3
