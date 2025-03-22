@@ -3,6 +3,7 @@
 /node_modules/
 /static/
 /staticfiles/
+/venv/
 *.pyc
 __pycache__/
 migrations/
