@@ -1,0 +1,86 @@
+// Optionnel : redéfinir les variables Foundation avant l'import, par exemple :
+$topbar-background	: #333;
+$topbar-color		: #fff;
+$topbar-link-color	: #fff;
+$topbar-link-hover-color: #ccc;
+$topbar-link-active-color: #ccc;
+$topbar-dropdown-background: #333;
+$topbar-dropdown-link-color: #fff;
+$topbar-dropdown-link-hover-color: #ccc;
+$topbar-dropdown-link-active-color: #ccc;
+$topbar-dropdown-toggle-color: #fff;
+$topbar-dropdown-toggle-hover-color: #ccc;
+$topbar-dropdown-toggle-active-color: #ccc;
+$topbar-dropdown-toggle-background: green;
+$topbar-dropdown-toggle-hover-background: #333;
+$topbar-dropdown-toggle-active-background: green;
+// ... d’autres variables personnalisées
+
+// Importer les fichiers SCSS de Foundation depuis node_modules.
+// Avec node-sass, pensez à ajouter “--include-path=node_modules” lors de la compilation
+@import "foundation-sites/scss/foundation";
+
+// Inclure les modules que vous souhaitez activer
+@include foundation-everything;
+
+// Ajoutez vos styles personnalisés après les importations Foundation
+.top-bar {
+  background-color: $topbar-background;
+  color: $topbar-color;
+  a {
+    color: $topbar-link-color;
+    &:hover {
+      color: $topbar-link-hover-color;
+      background-color: green;
+    }
+    &.active {
+      color: $topbar-link-active-color;
+    }
+  }
+  .dropdown {
+    a {
+      color: $topbar-dropdown-link-color;
+      &:hover {
+        color: $topbar-dropdown-link-hover-color;
+        background-color: green;
+      }
+      &.active {
+        color: $topbar-dropdown-link-active-color;
+      }
+    }
+    .toggle {
+      color: $topbar-dropdown-toggle-color;
+      &:hover {
+        color: $topbar-dropdown-toggle-hover-color;
+        background-color: green;
+      }
+      &.active {
+        color: $topbar-dropdown-toggle-active-color;
+      }
+      background-color: $topbar-dropdown-toggle-background;
+      &:hover {
+        background-color: green;
+      }
+      &.active {
+        background-color: green;
+      }
+    }
+  }
+}
+.dropdown.menu > li.is-active > a , .menu .is-active > a {
+    background: green;
+    color: #ccc
+  }
+
+  footer {
+    background: lightgrey;
+  }
+
+  footer a {
+    color: black;
+    &:hover {
+      color: white;
+      background: black;
+    }
+  }
+  

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load wagtailimages_tags %}
+
+<!-- load wagtailcore_tags by adding this: -->
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% block body_class %}template-homepage{% endblock %}
+
+<!-- replace everything below with: -->
+{% block content %}
+<article class="grid-container">
+    <div class="grid-x grid-margin-x">
+  
+      <div class="medium-7 large-9 cell">
+        {% for block in page.intro %}
+        <section>{% include_block block %}</section>
+    {% endfor %}
+      </div>
+
+      <div class="medium-5 large-3 cell">
+        <div class="callout secondary">
+          <form>
+            <div class="grid-x">
+              <div class="small-12 cell">
+                <input type="text" placeholder="Recherche:">
+                <button type="submit" class="button">Search Now!</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+  
+    </div>
+  
+  <div class="">
+    <hr>
+  </div>
+  
+  <div class="">
+    <h2>Article à la Une:</h2>
+  </div>
+  
+  <div class="grid-x grid-margin-x small-up-1 medium-up-2 large-up-3">
+    {% for article in featured_posts %}
+      <div class="cell">
+        <div class="callout">
+          <h3><a href="{{ article.url }}">{{ article.title }}</a></h3>
+          {% image article.image max-400x400 %}
+          <p>{{ article.intro|richtext }}</p>
+        </div>
+      </div>
+    {% endfor %} 
+  </div>
+
+  <hr>
+  
+
+ 
+  
+  
+  <div class="">
+    <a href="{{ blog_index_url }}" class="button expanded primary" style="font-weight: bold; color:lightgrey;">Voir tous les articles.</a>
+  </div>
+  </article>
+
+{% endblock %}

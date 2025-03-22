@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load wagtailimages_tags %}
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-blogpage{% endblock %}
+
+{% block content %}
+    <h1>{{ page.title }}</h1>
+    <p class="meta">{{ page.date }}</p>
+
+    <div class="intro">{{ page.intro|richtext }}</div>
+
+    {% for block in page.body %}
+        {% if block.block_type == "paragraph" %}
+            <p>{{ block.value|richtext }}</p>
+        {% elif block.block_type == "image" %}
+            {% image block.value max-1200x1200 %}
+        {% endif %}
+    {% endfor %}
+    {% for author in page.authors.all %}
+    <div class="author-details">
+        <h3>{{ author.view_name }}</h3>
+        {% if author.author_image %}
+            {% image author.author_image max-200x200 %}
+        {% endif %}
+        <p>{{ author.bio|richtext }}</p>
+        <p>{{ author.url }}</p>
+    </div>
+{% endfor %}
+    <p><a href="{{ page.get_parent.url }}"><span><i class="fi-arrow-up"> {{ page.get_parent.title }}</i></span></a></p>
+
+{% endblock %}

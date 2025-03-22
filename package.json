@@ -1,0 +1,28 @@
+{
+  "name": "floran",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:js": "webpack",
+    "build:css": "sass --no-source-map --load-path=node_modules floran/static/scss/main.scss floran/static/css/main.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "foundation-sites": "^6.9.0",
+    "jquery": "^3.7.1",
+    "what-input": "^5.2.12"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
+    "babel-loader": "^10.0.0",
+    "sass": "^1.86.0",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1"
+  }
+}

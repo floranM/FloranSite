@@ -1,0 +1,9 @@
+// fichier ayant pour but de lister tout ce qu'il faut ignorer sur git
+/media/
+/node_modules/
+/static/
+/staticfiles/
+*.pyc
+__pycache__/
+migrations/
+*.sqlite3
