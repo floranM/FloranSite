@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load wagtailimages_tags %}
 {% load wagtailcore_tags %}
+{% load i18n %}
 
 {% block body_class %}template-blogindexpage{% endblock %}
 
@@ -31,8 +32,14 @@
       color: skyblue;
       font-size: 2rem;
     }
-  
-  </style>
+    i.fi-skull {
+      color: red;
+      font-size: 2rem;
+    }
+    .social-fi {
+      font-size: 2rem;
+    }
+</style>
     <article class="grid-container">
         <h1>{{ page.title }}</h1>
 
@@ -56,8 +63,8 @@
                                 <span><i class="fi-calendar"> {{ post.specific.date }}</i></span>
 
                             </p>
-                            {{ post.intro|richtext }}
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae impedit beatae, ipsum delectus aperiam nesciunt magni facilis ullam.</p>
+                            <p>{{ post.specific.intro|richtext }}</p>
+                            
                         </div>
                     </div>
                         
@@ -66,15 +73,34 @@
                 {% endfor %}    
       
           
-      
-          <ul class="pagination margin-bottom-2" role="navigation" aria-label="Pagination">
-            <li class="disabled">Previous <span class="show-for-sr">page</span></li>
-            <li class="current"><span class="show-for-sr">You're on page</span> 1</li>
-            <li><a href="#" aria-label="Page 2">2</a></li>
-            <li><a href="#" aria-label="Page 3">3</a></li>
-            <li><a href="#" aria-label="Page 4">4</a></li>
-            <li><a href="#" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
-          </ul>
+
+                <nav aria-label="Pagination">
+                  <ul class="pagination">
+                      {% if blogpages.has_previous %}
+                          <li class="pagination-previous">
+                              <a href="?page={{ blogpages.previous_page_number }}" aria-label="Previous page">{% trans "Previous" %}</a>
+                          </li>
+                      {% else %}
+                      <li class="pagination-previous disabled">
+                        <span>{% trans "Previous" %}</span>
+                    </li>
+                      {% endif %}
+                      {% for page_num in blogpages.paginator.page_range %}
+                          <li class="{% if page_num == blogpages.number %}current{% endif %}">
+                              <a href="?page={{ page_num }}" aria-label="Page {{ page_num }}">{{ page_num }}</a>
+                          </li>
+                      {% endfor %}
+                      {% if blogpages.has_next %}
+                          <li class="pagination-next">
+                              <a href="?page={{ blogpages.next_page_number }}" aria-label="Next page">{% trans "Next" %}</a>
+                          </li>
+                          {% else %}
+                          <li class="pagination-next disabled">
+                            <span>{% trans "Next" %}</span>
+                        </li>
+                      {% endif %}
+                  </ul>
+              </nav>
       
         </div>
         <div class="grid-x large-4 cell">
@@ -82,46 +108,13 @@
           <aside>
       
             <div class="grid-x small-up-3">
-      
-              <div class="cell text-center">
-                <i class="fi-social-facebook"></i>
-                <h6>56,009</h6>
-                <p><small>FOLLOWERS</small></p>
-                <br>
-              </div>
-      
-              <div class="cell text-center">
-                <i class="fi-social-twitter"></i>
-                <h6>76,905</h6>
-                <p><small>FOLLOWERS</small></p>
-                <br>
-              </div>
-      
-              <div class="cell text-center">
-                <i class="fi-social-instagram"></i>
-                <h6>34,099</h6>
-                <p><small>FOLLOWERS</small></p>
-                <br>
-              </div>
-      
-              <div class="cell text-center">
-                <i class="fi-social-tumblr"></i>
-                <h6>13,765</h6>
-                <p><small>FOLLOWERS</small></p>
-              </div>
-      
-              <div class="cell text-center">
-                <i class="fi-social-pinterest"></i>
-                <h6>9,283</h6>
-                <p><small>FOLLOWERS</small></p>
-              </div>
-      
-              <div class="cell text-center">
-                <i class="fi-social-youtube"></i>
-                <h6>99,000</h6>
-                <p><small>FOLLOWERS</small></p>
-              </div>
-      
+              {% for social in socialLinks %}
+                <div class="cell text-center">
+                  <a href="{{ social.url }}" target="_blank"><i class="fi-{{ social.icon| default:"skull"}} social-fi"></i>
+                  <h6>{{ social.follow|default:"xx" }}</h6>
+                  <p><small>FOLLOWERS</small></p></a>
+                </div>
+              {% endfor %}
             </div>
       
             <br>
@@ -177,7 +170,7 @@
           </aside>
       
         </div>
-      </div>
+      </article>
     
 
 {% endblock %}

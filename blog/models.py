@@ -14,11 +14,21 @@ from taggit.models import TagBase, ItemBase
 from wagtail.fields import StreamField
 from wagtail import blocks
 from wagtail.images.blocks import ImageBlock
+from wagtail.images.blocks import ImageChooserBlock
 
 from wagtail.search import index
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+class SocialLink(models.Model):
+    titre = models.CharField(max_length=255)
+    url= models.URLField(blank=True)
+    follow = models.CharField(max_length=255, blank=True)
+    icon = models.CharField(max_length=255, blank=True)
+    position = models.IntegerField(default=0)
 
+    def __str__(self):
+        return self.titre
 
 
 class BlogIndexPage(Page):
@@ -32,7 +42,22 @@ class BlogIndexPage(Page):
         current_locale = self.locale
         context = super().get_context(request)
         blogpages = self.get_children().live().filter(locale=current_locale).order_by('-first_published_at')
-        context['blogpages'] = blogpages
+        socialLinks = SocialLink.objects.all().order_by('position')
+         # Ajouter la pagination
+        paginator = Paginator(blogpages, 1)  # Diviser par lot de 5 pages par page
+        page = request.GET.get('page')  # Récupérer le numéro de page depuis l'URL
+
+        try:
+            paginated_blogpages = paginator.page(page)
+        except PageNotAnInteger:
+            # Si la page n'est pas un entier, afficher la première page
+            paginated_blogpages = paginator.page(1)
+        except EmptyPage:
+            # Si la page est hors limites, afficher la dernière page
+            paginated_blogpages = paginator.page(paginator.num_pages)
+
+        context['blogpages'] = paginated_blogpages
+        context['socialLinks'] = socialLinks
         return context
 
 

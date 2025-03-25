@@ -5,7 +5,7 @@ from wagtail.fields import RichTextField
 from wagtail.fields import StreamField
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel
-from wagtail.images.blocks import ImageBlock
+from wagtail.images.blocks import ImageChooserBlock
 from blog.models import BlogPage, BlogIndexPage
 
 class HomePage(Page):
@@ -34,7 +34,38 @@ class HomePage(Page):
    
     
 
-class AboutPage(Page):
-    body = RichTextField(blank=True)
+class StandardPage(Page):
+    body = StreamField([
+        ('heading', blocks.CharBlock(classname="full title")),
+        ('paragraph', blocks.RichTextBlock()),
+        ('code', blocks.TextBlock()),
+        ('image', ImageChooserBlock())
+        ])
 
     content_panels = Page.content_panels + ["body"]
+
+class FooterUn(models.Model):
+    title = models.CharField(max_length=255, blank=True)
+    content = RichTextField(blank=True)
+    def __str__(self):
+        return self.title
+    # Méthode pour contrôler la création
+    def save(self, *args, **kwargs):
+        if not self.pk and FooterUn.objects.exists():
+            raise ValueError("Un seul enregistrement est autorisé.")
+        super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = "Menu Footer 1, a enregistrement unique"
+
+class FooterDeux(models.Model):
+    title = models.CharField(max_length=255, blank=True)
+    content = RichTextField(blank=True)
+    # Méthode pour contrôler la création
+    def save(self, *args, **kwargs):
+        if not self.pk and FooterDeux.objects.exists():
+            raise ValueError("Un seul enregistrement est autorisé.")
+        super().save(*args, **kwargs)
+    
+    class Meta:
+        verbose_name = "Modèle à enregistrement unique"
