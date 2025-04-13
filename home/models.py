@@ -19,6 +19,8 @@ class HomePage(Page):
             context["featured_posts"] = 'fuck'
         blog_index_page = BlogIndexPage.objects.filter(locale=current_locale).first()
         context['blog_index_url'] = blog_index_page.url if blog_index_page else None
+        context['footerUn'] = FooterUn.objects.first()
+        context['footerDeux'] = FooterDeux.objects.first()
         return context
      
     intro = StreamField([
@@ -35,6 +37,13 @@ class HomePage(Page):
     
 
 class StandardPage(Page):
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        current_locale = self.locale
+        context['footerUn'] = FooterUn.objects.first()
+        context['footerDeux'] = FooterDeux.objects.first()
+        return context
+
     body = StreamField([
         ('heading', blocks.CharBlock(classname="full title")),
         ('paragraph', blocks.RichTextBlock()),

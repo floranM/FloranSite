@@ -20,6 +20,7 @@ from wagtail.search import index
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+
 class SocialLink(models.Model):
     titre = models.CharField(max_length=255)
     url= models.URLField(blank=True)
@@ -44,7 +45,7 @@ class BlogIndexPage(Page):
         blogpages = self.get_children().live().filter(locale=current_locale).order_by('-first_published_at')
         socialLinks = SocialLink.objects.all().order_by('position')
          # Ajouter la pagination
-        paginator = Paginator(blogpages, 1)  # Diviser par lot de 5 pages par page
+        paginator = Paginator(blogpages, 5)  # Diviser par lot de 5 pages par page
         page = request.GET.get('page')  # Récupérer le numéro de page depuis l'URL
 
         try:
@@ -58,6 +59,8 @@ class BlogIndexPage(Page):
 
         context['blogpages'] = paginated_blogpages
         context['socialLinks'] = socialLinks
+        context['footerUn'] = FooterUn.objects.first()
+        context['footerDeux'] = FooterDeux.objects.first()
         return context
 
 
@@ -79,6 +82,13 @@ class TaggedBlog(ItemBase):
     )
 
 class BlogPage(Page):
+    def get_context(self, request):
+        # Update context to include only published posts, ordered by reverse-chron
+        current_locale = self.locale
+        context = super().get_context(request)
+        context['footerUn'] = FooterUn.objects.first()
+        context['footerDeux'] = FooterDeux.objects.first()
+        return context
     parent_page_types = ['BlogIndexPage']
     
     date = models.DateTimeField("Post date")
@@ -133,3 +143,6 @@ class Author(models.Model):
 
     class Meta:
         verbose_name_plural = 'Authors'
+
+
+from home.models import FooterUn, FooterDeux
