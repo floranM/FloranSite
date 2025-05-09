@@ -8,6 +8,9 @@ from wagtail.snippets.models import register_snippet
 from wagtail.admin.panels import MultiFieldPanel
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 
+from wagtail_localize.fields import TranslatableField
+from wagtail_localize.models import TranslatableMixin
+
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TagBase, ItemBase
 
@@ -86,6 +89,8 @@ class BlogPage(Page):
         # Update context to include only published posts, ordered by reverse-chron
         current_locale = self.locale
         context = super().get_context(request)
+        context['authors'] = self.authors if self.authors.locale == current_locale else None
+
         context['footerUn'] = FooterUn.objects.first()
         context['footerDeux'] = FooterDeux.objects.first()
         return context
@@ -108,7 +113,7 @@ class BlogPage(Page):
         related_name="+",
         help_text="Homepage image",
     )
-    authors = ParentalManyToManyField('blog.Author', blank=True)
+    authors = models.ForeignKey('blog.Author', null=True, blank=True, on_delete=models.SET_NULL)
     
     tags = ClusterTaggableManager(through=TaggedBlog, blank=True)
 
@@ -123,10 +128,13 @@ class BlogPage(Page):
     content_panels = Page.content_panels + [MultiFieldPanel(["date", "authors"]), "intro", "body", FieldPanel('image'), FieldPanel('tags')]
     promote_panels = Page.promote_panels + [FieldPanel('IsFeatured'),]
 
+    override_translatable_fields = [
+        TranslatableField("authors"),
+    ]
 
 
-@register_snippet
-class Author(models.Model):
+
+class Author(TranslatableMixin, models.Model):
     name = models.CharField(max_length=255)
     view_name = models.CharField(max_length=255)
     url = models.CharField(max_length=255, blank=True)
@@ -136,13 +144,16 @@ class Author(models.Model):
     )
     bio = RichTextField(blank=True)
 
+
     panels = ["name","view_name", "bio", "author_image", "url"]
 
     def __str__(self):
         return self.name
-
     class Meta:
         verbose_name_plural = 'Authors'
+        constraints = [
+            models.UniqueConstraint(fields=('translation_key', 'locale'), name='unique_translation_key_locale_blog_author'),
+        ]
 
 
 from home.models import FooterUn, FooterDeux

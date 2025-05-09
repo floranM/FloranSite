@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'wagtail_localize.locales',  # Nécessaire pour les locales
     'wagtail.contrib.simple_translation',  # Optionnel mais utile
     'wagtail_modeladmin',
+    "wagtail_localize.modeladmin",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.embeds",

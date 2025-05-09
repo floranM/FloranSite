@@ -18,26 +18,25 @@
                 {% image block.value max-1200x1200 %}
             {% endif %}
         {% endfor %}
-
-        {% for author in page.authors.all %}
+        <hr>
         <div class="author-details secondary callout">
             
-            {% if author.author_image %}
+            {% if page.authors.author_image %}
                 <div class="grid-x grid-margin-x">
                 <div class="small-2 cell">
-                    {% image author.author_image max-180x180 %}
+                    {% image page.authors.author_image max-180x180 %}
                 </div>
                 <div class="small-10 cell">
             {% else%}
                 <div class="small-12 cell">
             {% endif %}
-                    <h5>{{ author.view_name }}</h5>
-                    <p>{{ author.bio|richtext }}</p>
-                    <p>{{ author.url }}</p>
+                    <h5>{{ page.authors.view_name }}</h5>
+                    <p>{{ page.authors.bio|richtext }}</p>
+                    <p>{{ page.authors.url }}</p>
                 </div>
                 </div>
         </div>
-    {% endfor %}
+   
         <p><a href="{{ page.get_parent.url }}"><span><i class="fi-arrow-up"> {{ page.get_parent.title }}</i></span></a></p>
     </article>
 {% endblock %}

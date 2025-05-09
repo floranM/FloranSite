@@ -2,6 +2,8 @@ from django.contrib import admin
 
 # Register your models here.
 from wagtail_modeladmin.options import ModelAdmin, modeladmin_register, ModelAdminGroup
+from wagtail_localize.modeladmin.options import TranslatableModelAdmin
+
 from .models import BlogPage, BlogTag, SocialLink, Author
 from home.models import FooterUn, FooterDeux
 from taggit.models import TaggedItemBase, Tag
@@ -21,19 +23,12 @@ class TagAdmin(ModelAdmin):
     list_display = ('name', 'slug')
     search_fields = ('name', 'slug')  # Champs disponibles pour la
 
-class AuthorAdmin(ModelAdmin):
-    model = Author  # Spécifiez le modèle à administrer
-    menu_label = "Auteurs"  # Le nom qui apparaîtra dans le menu admin
-    menu_icon = "user"  # Icône pour le menu (choisissez une icône de Wagtail)
-    list_display = ('name', 'view_name', 'url')
-    search_fields = ('name')  # Champs disponibles pour la recherche
-    list_filter = ('name', 'url')  # Les colonnes dans la liste
 
 # Groupe ModelAdmin
 class GestionBlogGroup(ModelAdminGroup):
     menu_label = "Blog"  # Nom du groupe dans le menu
     menu_icon = "form"  # Icône du groupe
-    items = [BlogPageAdmin, TagAdmin, AuthorAdmin]  # Admins inclus dans le groupe
+    items = [BlogPageAdmin, TagAdmin]  # Admins inclus dans le groupe
 
 # Enregistrement du groupe
 modeladmin_register(GestionBlogGroup)
