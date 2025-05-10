@@ -132,6 +132,10 @@ class BlogPage(Page):
         TranslatableField("authors"),
     ]
 
+    def get_author_queryset(self, request):
+        """Filtrer les auteurs en fonction de la locale de la page."""
+        return Author.objects.filter(locale=self.locale)
+
 
 
 class Author(TranslatableMixin, models.Model):
