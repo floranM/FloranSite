@@ -21,7 +21,8 @@ msgstr ""
 #: floran/templates/base.html:52
 msgid "Accueil"
 msgstr "Home"
-
+#: test translation
+ 
 #: floran/templates/base.html:74
 msgid "Langue:"
 msgstr "Language"
