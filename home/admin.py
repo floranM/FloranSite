@@ -1,9 +1,11 @@
 from django.contrib import admin
 
-from wagtail_modeladmin.options import modeladmin_register
+from wagtail_modeladmin.options import modeladmin_register, ModelAdminGroup
 from wagtail_localize.modeladmin.options import TranslatableModelAdmin
 
 from blog.models import Author
+from home.models import FooterUn, FooterDeux
+
 
 
 class MyTranslatableModelAdmin(TranslatableModelAdmin):
@@ -15,4 +17,17 @@ class MyTranslatableModelAdmin(TranslatableModelAdmin):
     list_filter = ('name', 'url')  # Les colonnes dans la liste
 
 
-modeladmin_register(MyTranslatableModelAdmin)
+
+class MyTranslatableModelFooterUnAdmin(TranslatableModelAdmin):
+    model = FooterUn
+
+class MytranslatableModelFooterDeuxAdmin(TranslatableModelAdmin):
+    model = FooterDeux
+
+
+class MyTranslatableGroup(ModelAdminGroup):
+    menu_label = "Groupe de traduction"  # Nom du groupe dans le menu
+    menu_icon = "cogs"  # Icône du groupe
+    items = [MyTranslatableModelAdmin, MyTranslatableModelFooterUnAdmin, MytranslatableModelFooterDeuxAdmin]  # Admins inclus dans le groupe
+
+modeladmin_register(MyTranslatableGroup)

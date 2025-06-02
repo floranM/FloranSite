@@ -62,8 +62,8 @@ class BlogIndexPage(Page):
 
         context['blogpages'] = paginated_blogpages
         context['socialLinks'] = socialLinks
-        context['footerUn'] = FooterUn.objects.first()
-        context['footerDeux'] = FooterDeux.objects.first()
+        context['footerUn'] = FooterUn.objects.filter(locale=current_locale).first()
+        context['footerDeux'] = FooterDeux.objects.filter(locale=current_locale).first()
         return context
 
 
@@ -91,8 +91,8 @@ class BlogPage(Page):
         context = super().get_context(request)
         context['authors'] = self.authors if self.authors.locale == current_locale else None
 
-        context['footerUn'] = FooterUn.objects.first()
-        context['footerDeux'] = FooterDeux.objects.first()
+        context['footerUn'] = FooterUn.objects.filter(locale=current_locale).first()
+        context['footerDeux'] = FooterDeux.objects.filter(locale=current_locale).first()
         return context
     parent_page_types = ['BlogIndexPage']
     

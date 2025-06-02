@@ -41,26 +41,15 @@ class SocialLinkAdmin(ModelAdmin):
     list_filter = ("follow", "url", 'titre')
     search_fields = ("titre")  # Ajout d'un champ de recherche
 
-class FooterUnAdmin(ModelAdmin):
-    model = FooterUn
-    menu_icon = "doc-empty"
-    menu_label = "Footer Un"
-    list_display = ("title",)
-    search_fields = ("title",)  # Ajout d'un champ de recherche
 
 
-class FooterDeuxAdmin(ModelAdmin):
-    model = FooterDeux
-    menu_icon = "doc-empty"
-    menu_label = "Footer Deux"
-    list_display = ("title",)
-    search_fields = ("title",)  # Ajout d'un champ de recherche
+
 
 # Groupe ModelAdmin
 class ParametreGroup(ModelAdminGroup):
     menu_label = "Parametres Site"  # Nom du groupe dans le menu
     menu_icon = "cogs"  # Icône du groupe
-    items = [SocialLinkAdmin, FooterUnAdmin, FooterDeuxAdmin]  # Admins inclus dans le groupe
+    items = [SocialLinkAdmin]  # Admins inclus dans le groupe
 
 # Enregistrement du groupe
 modeladmin_register(ParametreGroup)
